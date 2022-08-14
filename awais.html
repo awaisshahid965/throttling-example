@@ -115,12 +115,12 @@
 	let checkboxEl = document.querySelector('#check');
 
 	// variables needed...
-	let counter = 0;
-	let throttleFlag = true;
+	let counter, throttleFlag = false;
 
 
 	// utility function needed for reset
 	function resetThings() {
+		counter = 0;
 		counterEl.innerText = counter;
 		switchEl.innerText = throttleFlag ? 'Off' : 'On';
 	}
@@ -132,7 +132,6 @@
 	// checkbox eventlistener added...
 	checkboxEl.addEventListener('change', () => {
 		throttleFlag = checkboxEl.checked;
-		counter = 0;
 		resetThings();
 	});
 
@@ -143,14 +142,23 @@
 	}
 
 	function scrollWithThrottle() {
-		counter -= -1;
-		console.log('aaa')
+		let flagOn = true;
+		return function() {
+			if(!flagOn) return;
+			setTimeout(() => {
+				counter -= -1;
+				counterEl.innerText = counter;
+				flagOn = true;
+			}, 500);
+			flagOn = false;
+		};
 	}
 
+	const scrollWithThrottleFun = scrollWithThrottle();
 	window.onscroll = () => {
-		// throttleFlag ? scrollWithThrottle() : scrollWithoutThrottle();
+		throttleFlag ? scrollWithThrottleFun() : scrollWithoutThrottle();
 		// throttleFlag ? console.log(1) : console.log(2);
-		console.log(throttleFlag)
+		// console.log(throttleFlag)
 	};
 
 </script>
