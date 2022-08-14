@@ -22,26 +22,74 @@
 
 		div {
 			min-height: 100vh;
-			background-color: indigo;
+			background-color: #262626;
+			color: #fff;
 
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			color: #fff;
 			font-size: 4rem;
 		}
 
 		div:nth-child(2n + 1) {
-			background-color: indianred;
+			background-color: #f0f0f0;
+			color: #333;
 		}
 
-		div:nth-child(3n + 1) {
-			background-color: orangered;
+		h1 {
+			font-size: 2rem;
+			padding: 3rem 0;
+			background-color: crimson;
+			text-align: center;
+			color: #fff;
+			font-weight: 400;
+			letter-spacing: 1px;
+		}
+
+		section {
+			position: fixed;
+			top: 50%;
+			right: 0;
+			transform: translateY(-50%);
+			padding: 2rem 1rem;
+			background-color: #161616;
+			color: #fff;
+			display: grid;
+			place-items: center;
+			box-shadow: -5px 0 3rem rgba(255, 255, 255, 0.3);
+		}
+
+		section p {
+			font-size: 2rem;
+		}
+
+		section label, input {
+			display: inline-block;
+		}
+
+		section label {
+			font-size: 16px;
+			margin-left: 1rem;
+		}
+
+		section nav {
+			margin-top: 1rem;
+			border-top: 1px solid #666;
+			padding-top: 1rem;
+			display: flex;
+			align-items: center;
 		}
 		
 	</style>
 </head>
 <body>
+	<section>
+		<p>Total Calls on scroll: <span id="counter">10</span></p>
+		<nav>
+			<input type="checkbox" name="check" id="check">
+			<label for="check">Turn <span id="switch">Off</span> Throttling...</label>
+		</nav>
+	</section>
 	<h1>Throttling Implemented on scroll</h1>
 	<div>Section 1</div>
 	<div>Section 2</div>
@@ -56,4 +104,55 @@
 	<div>Section 11</div>
 	<div>Section 12</div>
 </body>
+
+<script>
+
+	// selected elements where values are displayed...
+	let counterEl = document.querySelector('#counter');
+	let switchEl = document.querySelector('#switch');
+
+	// checkbox
+	let checkboxEl = document.querySelector('#check');
+
+	// variables needed...
+	let counter = 0;
+	let throttleFlag = true;
+
+
+	// utility function needed for reset
+	function resetThings() {
+		counterEl.innerText = counter;
+		switchEl.innerText = throttleFlag ? 'Off' : 'On';
+	}
+
+	// initialize things...
+	resetThings();
+
+
+	// checkbox eventlistener added...
+	checkboxEl.addEventListener('change', () => {
+		throttleFlag = checkboxEl.checked;
+		counter = 0;
+		resetThings();
+	});
+
+
+	function scrollWithoutThrottle() {
+		counter -= -1;
+		counterEl.innerText = counter;
+	}
+
+	function scrollWithThrottle() {
+		counter -= -1;
+		console.log('aaa')
+	}
+
+	window.onscroll = () => {
+		// throttleFlag ? scrollWithThrottle() : scrollWithoutThrottle();
+		// throttleFlag ? console.log(1) : console.log(2);
+		console.log(throttleFlag)
+	};
+
+</script>
+
 </html>
